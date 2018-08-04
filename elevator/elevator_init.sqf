@@ -21,7 +21,8 @@ if (isNil "ELE_RequiredBuildTools") then { ELE_RequiredBuildTools = ["ItemToolbo
 if (isNil "ELE_RequiredBuildItems") then { ELE_RequiredBuildItems = [["PartGeneric",4], "PartEngine", "ItemGenerator", "ItemJerrycan"] }; // required items to build an elevator
 if (isNil "ELE_RequiredBuildStopItems") then { ELE_RequiredBuildStopItems = [["PartGeneric",4]] }; // required items to build an elevator stop
 if (isNil "ELE_Debug") then { ELE_Debug = false }; // debug flag
-
+DZE_maintainClasses = DZE_maintainClasses + [ELE_StopClass];
+DZE_isRemovable = DZE_isRemovable + [ELE_StopClass];
 ELE_elevator = nil;
 
 // global functions
@@ -46,14 +47,14 @@ while {true} do {
 					s_player_elevator_previous = player addAction ["<t color=""#ffffff"">Activate Elevator: Previous Stop</t>", _folder+"elevator_actions.sqf", ["previous",_ct], 5, false];
 				};
 				if (s_player_elevator_select < 0) then {
-					s_player_elevator_select = player addAction ["<t color=""#ffffff"">Select Elevator</t>", _folder+"elevator_actions.sqf", ["select",_ct], 1, false];
+					s_player_elevator_select = player addAction ["<t color=""#ffffff"">Select Elevator</t>", _folder+"elevator_actions.sqf", ["select",_ct], 2, false];
 				};
 			} else {
 				if (s_player_elevator_upgrade < 0) then {
-					s_player_elevator_upgrade = player addAction ["<t color=""#ffffff"">Upgrade to Elevator</t>", _folder+"elevator_build.sqf", ["build",_ct], 0, false];
+					s_player_elevator_upgrade = player addAction ["Upgrade to Elevator", _folder+"elevator_build.sqf", ["build",_ct], 0, false];
 				};
 				if (s_player_elevator_upgrade_stop < 0) then {
-					s_player_elevator_upgrade_stop = player addAction ["<t color=""#ffffff"">Upgrade to Elevator Stop</t>", _folder+"elevator_build.sqf", ["build_stop",_ct], 0, false];
+					s_player_elevator_upgrade_stop = player addAction ["Upgrade to Elevator Stop", _folder+"elevator_build.sqf", ["build_stop",_ct], 0, false];
 				};
 			};
 		};
@@ -65,7 +66,7 @@ while {true} do {
 		};
 		// debug actions
 		if (s_player_elevator_id < 0 && ELE_Debug) then {
-			s_player_elevator_id = player addAction ["<t color=""#ddffffff"">Show Elevator ID</t>", _folder+"elevator_actions.sqf", ["id",_ct], 0, false];
+			s_player_elevator_id = player addAction ["Show Elevator ID", _folder+"elevator_actions.sqf", ["id",_ct], 0, false];
 		};
 	} else {
 		player removeAction s_player_elevator_next;
@@ -83,5 +84,5 @@ while {true} do {
 		player removeAction s_player_elevator_id;
 		s_player_elevator_id = -1;
 	};
-	sleep 1;
+	sleep 2;
 };

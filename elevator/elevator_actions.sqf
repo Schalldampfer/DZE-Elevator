@@ -25,7 +25,7 @@ switch (_option) do {
 	case "select": {
 		ELE_elevator = _args select 1;
 		_id = [ELE_elevator] call ELE_fnc_getElevatorId;
-		cutText [format["Elevator %1 selected", (_id select 0)], "PLAIN DOWN"];
+		format [format["Elevator %1 selected", (_id select 0)]] call dayz_rollingMessages;
 	};
 	case "call": {
 		_elevatorStop = _args select 1;
@@ -34,6 +34,6 @@ switch (_option) do {
 	case "id": {
 		_elevator = _args select 1;
 		_id = [_elevator] call ELE_fnc_getElevatorId;
-		cutText [format["Elevator ID = %1", _id], "PLAIN DOWN"];
+		format [format["Elevator ID = %1", _id]] call dayz_rollingMessages;
 	};
 };

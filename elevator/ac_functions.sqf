@@ -51,7 +51,7 @@ AC_fnc_swapObject = {
 	_object = createVehicle [_classname, [0,0,0], [], 0, "CAN_COLLIDE"];
 	_object setDir _dir;
 	_object setPosATL _location;
-	PVDZE_obj_Swap = [_objectCharacterID,_object,[_dir,_location],_classname,_obj,player];
+	PVDZE_obj_Swap = [_objectCharacterID,_object,[_dir,_location,dayz_playerUID],_classname,_obj,player,[],dayz_authKey];
 	publicVariableServer "PVDZE_obj_Swap";
 	player reveal _object;
 	_object
@@ -68,7 +68,7 @@ AC_fnc_hasTools = {
 		if (!(_x in _items)) exitWith {
 			_hasTools = false;
 			_missing = getText (configFile >> "cfgWeapons" >> _x >> "displayName");
-			cutText [format["Missing tool %1", _missing] , "PLAIN DOWN"];
+			format [format["Missing tool %1", _missing] ] call dayz_rollingMessages;
 		};
 	} forEach _tools;
 	_hasTools
@@ -104,7 +104,7 @@ AC_fnc_checkRequirements = {
 			_missingQty = (_countIn - _qty);
 			_hasItems = false;
 			_textMissing = getText(configFile >> "CfgMagazines" >> _missing >> "displayName");
-			cutText [format["Missing %1 more of %2", _missingQty, _textMissing], "PLAIN DOWN"];
+			format [format["Missing %1 more of %2", _missingQty, _textMissing]] call dayz_rollingMessages;
 		};
 	} forEach _items;
 	_hasItems
@@ -151,7 +151,7 @@ AC_fnc_removeRequirements = {
 	if (_tobe_removed_total == _removed_total) exitWith { true };
 	// missing parts
 	{ player addMagazine _x; } forEach _temp_removed_array;
-	cutText [format["Missing Parts after first check Item: %1 / %2", _removed_total, _tobe_removed_total], "PLAIN DOWN"];
+	format [format["Missing Parts after first check Item: %1 / %2", _removed_total, _tobe_removed_total]] call dayz_rollingMessages;
 	false
 };
 

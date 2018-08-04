@@ -134,6 +134,7 @@ ELE_fnc_getNextStopId = {
 		""
 	};
 	if ([_elevator] call ELE_fnc_hasNextStop) exitWith {
+		format ["Move elevator to last stop before building next stop"] call dayz_rollingMessages;
 		diag_log format ["ELE_fnc_getNextStopId stop %1 already exists", _nextStopId];
 		""
 	};
@@ -145,11 +146,11 @@ ELE_fnc_getNextStopId = {
 
 // params: elevator:object, stopDiff:number 
 ELE_fnc_activateElevator = {
-	private ["_elevator","_stopDiff","_id","_currentStopId","_firstActivation","_nextStopId","_nextStop","_dest","_pos","_dir","_stop","_dist","_attachments","_updateInterval","_distLast"];
+	private ["_elevator","_stopDiff","_id","_currentStopId","_firstActivation","_nextStopId","_nextStop","_dest","_pos","_dir","_stop","_dist","_attachments","_updateInterval","_distLast","_cid","_dmg"];
 	_elevator = _this select 0;
 	_stopDiff = _this select 1;
 	if (_elevator getVariable ["ElevatorActive", false]) exitWith {
-		cutText ["this elevator is already active", "PLAIN DOWN"];
+		format ["This elevator is already active!"] call dayz_rollingMessages;
 	};
 	_id = _elevator getVariable ["ElevatorID", 0];
 	_currentStopId = _elevator getVariable ["ElevatorCurrentStop", -1];
@@ -162,7 +163,7 @@ ELE_fnc_activateElevator = {
 	_nextStopId = _currentStopId + _stopDiff;
 	_nextStop = [_elevator, _stopDiff] call ELE_fnc_getNextStop;
 	if (isNil "_nextStop") exitWith {
-		cutText ["next elevator stop not found", "PLAIN DOWN"];
+		format ["Next elevator stop is not found."] call dayz_rollingMessages;
 	};
 	_dest = getPosATL _nextStop;
 	_dest set [2, (_dest select 2) + 0.05]; // elevate a little to separate elevator and stop point
@@ -171,6 +172,8 @@ ELE_fnc_activateElevator = {
 	if (_firstActivation) then {
 		// spawn elevator in and replace original with stop point
 		_dir = getDir _elevator;
+		_dmg = damage _elevator;
+		_cid = _elevator getVariable ["CharacterID", "0"];
 		deleteVehicle _elevator; // delete original
 		// create new elevator
 		_elevator = createVehicle [ELE_PlatformClass, [0,0,0], [], 0, "CAN_COLLIDE"];
@@ -179,6 +182,8 @@ ELE_fnc_activateElevator = {
 		_elevator setPosATL _pos;
 		_elevator setVariable ["ElevatorID", _id, true];
 		_elevator setVariable ["ElevatorStopID", 0, true];
+		_elevator setVariable ["CharacterID", _cid, true];
+		_elevator setDamage _dmg;
 		player reveal _elevator;
 		// create stop point
 		_stop = createVehicle [ELE_StopClass, [0,0,0], [], 0, "CAN_COLLIDE"];
@@ -193,6 +198,8 @@ ELE_fnc_activateElevator = {
 		if (!local _elevator) then {
 			// use setOwner on the server instead?
 			_dir = getDir _elevator;
+			_dmg = damage _elevator;
+			_cid = _elevator getVariable ["CharacterID", "0"];
 			deleteVehicle _elevator; // delete original
 			// create new elevator
 			_elevator = createVehicle [ELE_PlatformClass, [0,0,0], [], 0, "CAN_COLLIDE"];
@@ -200,6 +207,8 @@ ELE_fnc_activateElevator = {
 			_elevator setPosATL _pos;
 			_elevator setVariable ["ElevatorID", _id, true];
 			_elevator setVariable ["ElevatorStopID", 0, true];
+			_elevator setVariable ["CharacterID", _cid, true];
+			_elevator setDamage _dmg;
 			player reveal _elevator;
 			diag_log format ["ELE_fnc_activateElevator locality of elevator changed to player %1", name player];
 		};
@@ -210,9 +219,9 @@ ELE_fnc_activateElevator = {
 	_elevator setVariable ["ElevatorActive", true, true];
 	// attach near entities to the elevator platform
 	_attachments = [];
-	{ _x attachTo [_elevator]; _attachments set [count _attachments, _x]; } forEach (_elevator nearEntities ELE_Size);
+	{ _x attachTo [_elevator]; _attachments set [count _attachments, _x]; } forEach (_elevator nearEntities ["AllVehicles", ELE_Size]);
 	// animate to the next stop
-	cutText [format["moving to the next elevator stop (%1, %2 m away) ...", _nextStopId, _dist], "PLAIN DOWN"];
+	format [format["Moving to the next elevator stop (%1, %2 m away) ...", _nextStopId, _dist]] call dayz_rollingMessages;
 	_updateInterval = 1 / ELE_UpdatesPerSecond;
 	// direction pos -> dest
 	_dir = [_dest, _pos] call VEC_fnc_sub;
@@ -229,11 +238,13 @@ ELE_fnc_activateElevator = {
 		sleep _updateInterval;
 	};
 	_elevator setPosATL _dest; // just in case it went to far
+	_stopDir = getDir _nextStop;
+	_elevator setDir _stopDir;
 	// detach entities again
 	{ detach _x; } forEach _attachments;
 	_elevator setVariable ["ElevatorCurrentStop", _nextStopId, true];
 	_elevator setVariable ["ElevatorActive", false, true];
-	cutText ["... elevator stop reached", "PLAIN DOWN"];
+	format ["... elevator stop reached"] call dayz_rollingMessages;
 };
 
 // params: elevatorStop:object
@@ -253,10 +264,10 @@ ELE_fnc_callElevator = {
 		};
 	} forEach (nearestObjects [_elevatorStop, [ELE_PlatformClass], ELE_MaxRange * 10]); // max 10 times the range because 10 possible stops
 	if (isNil "_elevator") exitWith {
-		cutText ["elevator not found", "PLAIN DOWN"];
+		format ["Elevator not found"] call dayz_rollingMessages;
 	};
 	if (_elevator getVariable ["ElevatorActive", false]) exitWith {
-		cutText ["this elevator is already active", "PLAIN DOWN"];
+		format ["This elevator is already active"] call dayz_rollingMessages;
 	};
 	// get the elevator to this stop point
 	_currentStopId = _elevator getVariable ["ElevatorCurrentStop", 0];
@@ -269,5 +280,5 @@ ELE_fnc_callElevator = {
 			sleep ELE_StopWaitTime;
 		};
 	};
-	cutText ["elevator arrived", "PLAIN DOWN"];
+	format ["Elevator arrived"] call dayz_rollingMessages;
 };
