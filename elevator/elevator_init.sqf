@@ -23,6 +23,7 @@ if (isNil "ELE_RequiredBuildStopItems") then { ELE_RequiredBuildStopItems = [["P
 if (isNil "ELE_Debug") then { ELE_Debug = false }; // debug flag
 DZE_maintainClasses = DZE_maintainClasses + [ELE_StopClass];
 DZE_isRemovable = DZE_isRemovable + [ELE_StopClass];
+DayZ_SafeObjects = DayZ_SafeObjects + [ELE_StopClass];
 ELE_elevator = nil;
 
 // global functions
