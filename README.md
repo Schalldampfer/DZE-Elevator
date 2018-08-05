@@ -11,7 +11,7 @@ into
 ```sqf
 if (!isDedicated) then { *** };
 ``` 
-block in your DayZ_Epoch_**.Mapname\init.sqf ```
+block in your `DayZ_Epoch_**.Mapname\init.sqf`
 
 3. Add these lines
 
