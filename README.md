@@ -1,4 +1,6 @@
 # DZE-Elevator
+Created by Axe Cop
+
 # Installation and configuration
 
 1. Coppy&paste elevator folder into `DayZ_Epoch_**.Mapname\scripts`
@@ -39,4 +41,5 @@ ELE_StopWaitTime = 0; // disable the wait time if you call the elevator
 ELE_RequiredBuildTools = ["ItemToolbox", "ItemCrowbar"]; // required tools for building an elevator and elevator stop
 ELE_RequiredBuildItems = [["PartGeneric",2], "PartEngine", "ItemGenerator", "ItemJerrycan"]; // required items to build an elevator
 ELE_RequiredBuildStopItems = [["PartGeneric",2]]; // required items to build an elevator stop
+ELE_StopClass = "MetalFloor_Preview_DZ"; // elevator stop classname
 ```
