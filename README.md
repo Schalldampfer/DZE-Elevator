@@ -31,6 +31,13 @@ into
 dayz_resetSelfActions = { *** };
 ``` 
 block in your `Dayz_Epoch_**.Mapname\dayz_code\init\variables.sqf`
+and
+```sqf
+DZE_maintainClasses = DZE_maintainClasses + [ELE_StopClass];
+DZE_isRemovable = DZE_isRemovable + [ELE_StopClass];
+DayZ_SafeObjects = DayZ_SafeObjects + [ELE_StopClass];
+```
+out of the block
 
 4. Configuration: in `Dayz_Epoch_**.Mapname\dayz_code\init\variables.sqf`
 ```sqf
