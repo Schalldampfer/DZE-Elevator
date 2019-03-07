@@ -93,7 +93,7 @@ ELE_fnc_getNextStop = {
 	_stop = objNull;
 	{
 		_xid = [_x] call ELE_fnc_getElevatorId;
-		if ((_xid select 0) == _id && (_xid select 1) == _nextStopId) exitWith {
+		if ((_xid select 0) == _id && (_xid select 1) == _nextStopId) then {
 			// next stop found
 			_stop = _x;
 		};
@@ -146,7 +146,7 @@ ELE_fnc_getNextStopId = {
 
 // params: elevator:object, stopDiff:number 
 ELE_fnc_activateElevator = {
-	private ["_elevator","_stopDiff","_id","_currentStopId","_firstActivation","_nextStopId","_nextStop","_dest","_pos","_dir","_stop","_dist","_attachments","_updateInterval","_distLast","_cid","_dmg"];
+	private ["_elevator","_stopDiff","_id","_currentStopId","_firstActivation","_nextStopId","_nextStop","_dest","_pos","_dir","_stop","_dist","_attachments","_updateInterval","_distLast","_cid","_dmg","_oid","_uid"];
 	_elevator = _this select 0;
 	_stopDiff = _this select 1;
 	if (_elevator getVariable ["ElevatorActive", false]) exitWith {
@@ -174,6 +174,8 @@ ELE_fnc_activateElevator = {
 		_dir = getDir _elevator;
 		_dmg = damage _elevator;
 		_cid = _elevator getVariable ["CharacterID", "0"];
+		_oid = _elevator getVariable ["ObjectID", "0"];
+		_uid = _elevator getVariable ["ObjectUID", "0"];
 		deleteVehicle _elevator; // delete original
 		// create new elevator
 		_elevator = createVehicle [ELE_PlatformClass, [0,0,0], [], 0, "CAN_COLLIDE"];
@@ -183,6 +185,8 @@ ELE_fnc_activateElevator = {
 		_elevator setVariable ["ElevatorID", _id, true];
 		_elevator setVariable ["ElevatorStopID", 0, true];
 		_elevator setVariable ["CharacterID", _cid, true];
+		_elevator setVariable ["ObjectID", _oid, true];
+		_elevator setVariable ["ObjectUID", _uid, true];
 		_elevator setDamage _dmg;
 		player reveal _elevator;
 		// create stop point
