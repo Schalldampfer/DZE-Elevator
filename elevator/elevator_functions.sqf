@@ -204,6 +204,8 @@ ELE_fnc_activateElevator = {
 			_dir = getDir _elevator;
 			_dmg = damage _elevator;
 			_cid = _elevator getVariable ["CharacterID", "0"];
+			_oid = _elevator getVariable ["ObjectID", "0"];
+			_uid = _elevator getVariable ["ObjectUID", "0"];
 			deleteVehicle _elevator; // delete original
 			// create new elevator
 			_elevator = createVehicle [ELE_PlatformClass, [0,0,0], [], 0, "CAN_COLLIDE"];
@@ -212,6 +214,8 @@ ELE_fnc_activateElevator = {
 			_elevator setVariable ["ElevatorID", _id, true];
 			_elevator setVariable ["ElevatorStopID", 0, true];
 			_elevator setVariable ["CharacterID", _cid, true];
+			_elevator setVariable ["ObjectID", _oid, true];
+			_elevator setVariable ["ObjectUID", _uid, true];
 			_elevator setDamage _dmg;
 			player reveal _elevator;
 			diag_log format ["ELE_fnc_activateElevator locality of elevator changed to player %1", name player];
@@ -220,7 +224,7 @@ ELE_fnc_activateElevator = {
 	// select this elevator
 	ELE_elevator = _elevator;
 	_dist = _pos distance _dest;
-	_elevator setVariable ["ElevatorActive", true, true];
+	_elevator setVariable ["ElevatorActive", true, false];
 	// attach near entities to the elevator platform
 	_attachments = [];
 	{ _x attachTo [_elevator]; _attachments set [count _attachments, _x]; } forEach (_elevator nearEntities ["AllVehicles", ELE_Size]);
