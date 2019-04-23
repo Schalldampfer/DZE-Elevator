@@ -25,6 +25,7 @@ DZE_maintainClasses = DZE_maintainClasses + [ELE_StopClass];
 DZE_isRemovable = DZE_isRemovable + [ELE_StopClass];
 DayZ_SafeObjects = DayZ_SafeObjects + [ELE_StopClass];
 ELE_elevator = nil;
+if (!isNil "Custom_Buildables") then { Custom_Buildables set [count Custom_Buildables, ELE_StopClass]; };
 
 // global functions
 call compile preprocessFileLineNumbers (_folder + "vector.sqf");

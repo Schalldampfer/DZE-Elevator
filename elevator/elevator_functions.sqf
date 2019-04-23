@@ -266,6 +266,7 @@ ELE_fnc_callElevator = {
 	_stopId = _id select 1;
 	// find elevator
 	_elevator = nil;
+	{player reveal _x} count (player nearEntities [[ELE_PlatformClass],ELE_MaxRange]);
 	{
 		_xid = [_x] call ELE_fnc_getElevatorId;
 		if ((_xid select 0) == _elevatorId) exitWith {
