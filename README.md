@@ -39,7 +39,86 @@ DayZ_SafeObjects = DayZ_SafeObjects + [ELE_StopClass];
 ```
 out of the block
 
-4. Configuration: in `Dayz_Epoch_**.Mapname\dayz_code\init\variables.sqf`
+4. In `Dayz_Epoch_**.Mapname\dayz_code\compile\fn_selfActions.sqf`, Put these below :
+
+```sqf
+	//Elevator Ations
+	if ((player distance _cursorTarget) < ELE_Size) then {
+		// has target
+		if (_typeOfCursorTarget == ELE_PlatformClass) then {
+			// elevator actions
+			if ([_cursorTarget] call ELE_fnc_isElevator) then {
+				if (s_player_elevator_next < 0 && {[_cursorTarget] call ELE_fnc_hasNextStop}) then {
+					s_player_elevator_next = player addAction ["<t color=""#ffffff"">Activate Elevator: Next Stop</t>", "scripts\elevator\elevator_actions.sqf", ["next",_cursorTarget], 5, false];
+				};
+				if (s_player_elevator_previous < 0 && {[_cursorTarget] call ELE_fnc_hasPreviousStop}) then {
+					s_player_elevator_previous = player addAction ["<t color=""#ffffff"">Activate Elevator: Previous Stop</t>", "scripts\elevator\elevator_actions.sqf", ["previous",_cursorTarget], 5, false];
+				};
+				if (s_player_elevator_select < 0) then {
+					s_player_elevator_select = player addAction ["<t color=""#ffffff"">Select Elevator</t>", "scripts\elevator\elevator_actions.sqf", ["select",_cursorTarget], 2, false];
+				};
+			} else {
+				if (s_player_elevator_upgrade < 0) then {
+					s_player_elevator_upgrade = player addAction ["Upgrade to Elevator", "scripts\elevator\elevator_build.sqf", ["build",_cursorTarget], 0, false];
+				};
+				if (s_player_elevator_upgrade_stop < 0) then {
+					s_player_elevator_upgrade_stop = player addAction ["Upgrade to Elevator Stop", "scripts\elevator\elevator_build.sqf", ["build_stop",_cursorTarget], 0, false];
+				};
+			};
+		};
+		// elevator stop actions
+		if ([_cursorTarget] call ELE_fnc_isElevatorStop) then {
+			if (s_player_elevator_call < 0) then {
+				s_player_elevator_call = player addAction ["<t color=""#ffffff"">Call Elevator</t>", "scripts\elevator\elevator_actions.sqf", ["call",_cursorTarget], 5, false];
+			};
+		};
+		// debug actions
+		if (s_player_elevator_id < 0 && ELE_Debug) then {
+			s_player_elevator_id = player addAction ["Show Elevator ID", "scripts\elevator\elevator_actions.sqf", ["id",_cursorTarget], 0, false];
+		};
+	};
+```
+after
+```sqf
+	//Allow player to fill Fuel can
+	if (_hasEmptyFuelCan && _isFuel && _isAlive) then {
+		if (s_player_fillfuel < 0) then {
+			s_player_fillfuel = player addAction [localize "str_actions_self_10", "\z\addons\dayz_code\actions\jerry_fill.sqf",_cursorTarget, 1, false, true];
+		};
+	} else {
+		player removeAction s_player_fillfuel;
+		s_player_fillfuel = -1;
+	};
+```
+
+5. In `Dayz_Epoch_**.Mapname\dayz_code\compile\fn_selfActions.sqf`, Put these below :
+
+```sqf
+	player removeAction s_player_elevator_next;
+	s_player_elevator_next = -1;
+	player removeAction s_player_elevator_previous;
+	s_player_elevator_previous = -1;
+	player removeAction s_player_elevator_select;
+	s_player_elevator_select = -1;
+	player removeAction s_player_elevator_upgrade;
+	s_player_elevator_upgrade = -1;
+	player removeAction s_player_elevator_upgrade_stop;
+	s_player_elevator_upgrade_stop = -1;
+	player removeAction s_player_elevator_call;
+	s_player_elevator_call = -1;
+	player removeAction s_player_elevator_id;
+	s_player_elevator_id = -1;
+```
+after
+```sqf
+	player removeAction s_player_fuelauto2;
+	s_player_fuelauto2 = -1;
+	player removeAction s_player_manageDoor;
+	s_player_manageDoor = -1;
+```
+
+6. Configuration: in `Dayz_Epoch_**.Mapname\dayz_code\init\variables.sqf`
+
 ```sqf
 //elevator
 ELE_MaxRange = DZE_PlotPole select 0; // maximum range the elevator can travel / stop points can be built (in meter)
