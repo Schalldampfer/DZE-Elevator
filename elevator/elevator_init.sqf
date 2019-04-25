@@ -1,9 +1,6 @@
 if (isServer || isDedicated) exitWith {
 	diag_log "Error: Elevator script should NOT be started on the server";
 };
-if (count _this != 1) exitWith {
-	diag_log "Error: elevator_init.sqf called with wrong parameter count (the only parameter should be the folder of the script relative to the mission folder)";
-};
 
 // global variables
 if (isNil "ELE_PlatformClass") then { ELE_PlatformClass = "MetalFloor_DZ" };
