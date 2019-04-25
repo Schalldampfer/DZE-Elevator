@@ -117,7 +117,7 @@ after
 	s_player_manageDoor = -1;
 ```
 
-6. Configuration: in `Dayz_Epoch_**.Mapname\dayz_code\init\variables.sqf`
+6. Configuration: in `Dayz_Epoch_**.Mapname\dayz_code\init\variables.sqf`. Customize and add below:
 
 ```sqf
 //elevator
