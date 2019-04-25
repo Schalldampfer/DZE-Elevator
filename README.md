@@ -129,3 +129,4 @@ ELE_RequiredBuildItems = [["PartGeneric",2], "PartEngine", "ItemGenerator", "Ite
 ELE_RequiredBuildStopItems = [["PartGeneric",2]]; // required items to build an elevator stop
 ELE_StopClass = "MetalFloor_Preview_DZ"; // elevator stop classname
 ```
+before lines you added in 3.
