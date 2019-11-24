@@ -228,7 +228,7 @@ ELE_fnc_activateElevator = {
 	// select this elevator
 	ELE_elevator = _elevator;
 	_elevator setVariable ["ElevatorActive", true, false];
-	_elevator say "ch53_gear";
+	[nil, _elevator, rSAY, "ch53_gear", 100] call RE;
 	// attach near entities to the elevator platform
 	_attachments = [];
 	{ _x attachTo [_elevator]; _attachments set [count _attachments, _x]; } forEach (_elevator nearEntities ["AllVehicles", ELE_Size]);
@@ -252,7 +252,7 @@ ELE_fnc_activateElevator = {
 	_elevator setPosATL _dest; // just in case it went to far
 	_stopDir = getDir _nextStop;
 	_elevator setDir _stopDir;
-	_elevator say "PopUp2";
+	[nil, _elevator, rSAY, "PopUp2", 200] call RE;
 	// detach entities again
 	{ detach _x; } forEach _attachments;
 	_elevator setVariable ["ElevatorCurrentStop", _nextStopId, true];
