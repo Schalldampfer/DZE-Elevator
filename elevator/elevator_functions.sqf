@@ -82,6 +82,7 @@ ELE_fnc_getNextStop = {
 	_elevator = _this select 0;
 	_stopDiff = _this select 1;
 	_maxStopId = 9;
+	if !((typeOf _elevator) in [ELE_PlatformClass,ELE_StopClass]) exitWith {objNull};
 	_id = _elevator getVariable ["ElevatorID", 0];
 	_currentStopId = _elevator getVariable ["ElevatorCurrentStop", 0];
 	_nextStopId = _currentStopId + _stopDiff;
@@ -98,6 +99,7 @@ ELE_fnc_getNextStop = {
 			_stop = _x;
 		};
 	} forEach ((getPos _elevator) nearObjects [ELE_StopClass, _maxRange]);
+	//if (_stop distance _elevator > _maxRange) exitWith {objNull};
 	_stop
 };
 
@@ -168,6 +170,8 @@ ELE_fnc_activateElevator = {
 	_dest = getPosATL _nextStop;
 	_dest set [2, (_dest select 2) + 0.05]; // elevate a little to separate elevator and stop point
 	_pos = getPosATL _elevator;
+	_dist = _pos distance _dest;
+	if (_dist > ELE_MaxRange) exitWith {"Elevator selection failed." call dayz_rollingMessages;};
 	// check here again, if there is no elevator stop no elevator will be created
 	if (_firstActivation) then {
 		// spawn elevator in and replace original with stop point
@@ -223,7 +227,6 @@ ELE_fnc_activateElevator = {
 	};
 	// select this elevator
 	ELE_elevator = _elevator;
-	_dist = _pos distance _dest;
 	_elevator setVariable ["ElevatorActive", true, false];
 	_elevator say "ch53_gear";
 	// attach near entities to the elevator platform
