@@ -99,7 +99,7 @@ AC_fnc_checkRequirements = {
 		} else {
 			_qty = _countIn;
 		};
-		if (_qty < _countIn) exitWith {
+		if (_qty < _countIn) then {
 			_missing = _itemIn;
 			_missingQty = (_countIn - _qty);
 			_hasItems = false;
