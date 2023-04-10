@@ -149,7 +149,7 @@ before lines you added in 3.
    ```
    with:
    ```sqf
-	_setGlobal = [false,true] select ((_type in DZE_isLockedStorageUpgrade) || (_type in DZE_DoorsLocked) || (_type in ELE_Classes));
+   _setGlobal = [false,true] select ((_type in DZE_LockedStorage) || (_type in DZE_DoorsLocked) || (_type in ELE_Classes));
    ```
 9. In `dayz_server\system\server_monitor.sqf` on line `204` replace:
    ```sqf
