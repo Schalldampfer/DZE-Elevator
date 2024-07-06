@@ -1,6 +1,7 @@
 # DZE-Elevator
 Created by Axe Cop
 Updated for DayZ Epoch 1.0.7.1 by Treuce
+Updated for Elevator objects in 1.0.7.1 by Schalldampfer
 
 # Installation and configuration
 
@@ -46,7 +47,7 @@ out of the block
 	//Elevator Ations
 	if ((player distance _cursorTarget) < ELE_Size) then {
 		// has target
-		if (_typeOfCursorTarget == ELE_PlatformClass) then {
+		if (_typeOfCursorTarget == ELE_StartClass) then {
 			// elevator actions
 			if ([_cursorTarget] call ELE_fnc_isElevator) then {
 				if (s_player_elevator_next < 0 && {[_cursorTarget] call ELE_fnc_hasNextStop}) then {
@@ -62,10 +63,12 @@ out of the block
 				if (s_player_elevator_upgrade < 0) then {
 					s_player_elevator_upgrade = player addAction ["Upgrade to Elevator", "scripts\elevator\elevator_build.sqf", ["build",_cursorTarget], 0, false];
 				};
+			};
+		};
+		if (_typeOfCursorTarget == ELE_PlatformClass) then {
 				if (s_player_elevator_upgrade_stop < 0) then {
 					s_player_elevator_upgrade_stop = player addAction ["Upgrade to Elevator Stop", "scripts\elevator\elevator_build.sqf", ["build_stop",_cursorTarget], 0, false];
 				};
-			};
 		};
 		// elevator stop actions
 		if ([_cursorTarget] call ELE_fnc_isElevatorStop) then {
@@ -128,9 +131,11 @@ ELE_StopWaitTime = 0; // disable the wait time if you call the elevator
 ELE_RequiredBuildTools = ["ItemToolbox", "ItemCrowbar"]; // required tools for building an elevator and elevator stop
 ELE_RequiredBuildItems = [["PartGeneric",2], "PartEngine", "ItemGenerator", "ItemJerrycan"]; // required items to build an elevator
 ELE_RequiredBuildStopItems = [["PartGeneric",2]]; // required items to build an elevator stop
-ELE_StopClass = "MetalFloor_Preview_DZ"; // elevator stop classname
-ELE_PlatformClass = "MetalFloor_DZ";
-ELE_Classes = [ELE_StopClass] + [ELE_PlatformClass];
+ELE_StartClass = "ElevatorStart_DZ"; //Start *new
+ELE_PlatformClass = "ElevatorStop_Glass_DZ"; //Platform base
+ELE_StopClass = "ElevatorStop_Glass_DZ";//"ElevatorStop_Transparent_DZ"; // elevator stop classname
+ELE_Classes = [ELE_StartClass, ELE_PlatformClass, ELE_StopClass];
+ELE_Debug = true; // debug flag;
 ```
 
 7. In `dayz_server\compile\server_SwapObject.sqf` on line `70` replace:

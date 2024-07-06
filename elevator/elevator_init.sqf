@@ -3,8 +3,9 @@ if (isServer || isDedicated) exitWith {
 };
 
 // global variables
-if (isNil "ELE_PlatformClass") then { ELE_PlatformClass = "MetalFloor_DZ" };
-if (isNil "ELE_StopClass") then { ELE_StopClass = "MetalFloor_Preview_DZ" };
+if (isNil "ELE_StartClass") then { ELE_StartClass = "ElevatorStart_DZ" };
+if (isNil "ELE_PlatformClass") then { ELE_PlatformClass = "ElevatorStop_Glass_DZ" };
+if (isNil "ELE_StopClass") then { ELE_StopClass = "ElevatorStop_Transparent_DZ" };
 if (isNil "ELE_MaxRange") then { ELE_MaxRange = 25 }; // m
 if (isNil "ELE_Size") then { ELE_Size = 4 }; // m
 if (isNil "ELE_Speed") then { ELE_Speed = 2 }; // m/s

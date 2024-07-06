@@ -31,7 +31,7 @@ ELE_fnc_getElevatorId = {
 ELE_fnc_isElevator = {
 	private ["_obj","_id","_b"];
 	_obj = _this select 0;
-	if ((typeOf _obj) != ELE_PlatformClass) exitWith { false };
+	if ((typeOf _obj) != ELE_StartClass /*ELE_PlatformClass*/) exitWith { false };
 	_id = [_obj] call ELE_fnc_getElevatorId;
 	_b = (_id select 0) > 0 && (_id select 1) == 0;
 	_b
@@ -67,7 +67,7 @@ ELE_fnc_generateElevatorId = {
 				_id = _idTemp + 1;
 			};
 		};
-	} forEach ((getPos _obj) nearObjects [ELE_PlatformClass, _maxDistance]);
+	} forEach ((getPos _obj) nearObjects [ELE_StartClass /*ELE_PlatformClass*/, _maxDistance]);
 	if (_id > _maxElevatorId) exitWith { "" };
 	_idStr = [_id, 3] call AC_fnc_num2str;
 	_eid = "6976" + _idStr + "0";
@@ -82,7 +82,7 @@ ELE_fnc_getNextStop = {
 	_elevator = _this select 0;
 	_stopDiff = _this select 1;
 	_maxStopId = 9;
-	if !((typeOf _elevator) in [ELE_PlatformClass,ELE_StopClass]) exitWith {objNull};
+	if !((typeOf _elevator) in [ELE_StartClass,ELE_PlatformClass,ELE_StopClass]) exitWith {objNull};
 	_id = _elevator getVariable ["ElevatorID", 0];
 	_currentStopId = _elevator getVariable ["ElevatorCurrentStop", 0];
 	_nextStopId = _currentStopId + _stopDiff;
@@ -182,7 +182,7 @@ ELE_fnc_activateElevator = {
 		_uid = _elevator getVariable ["ObjectUID", "0"];
 		deleteVehicle _elevator; // delete original
 		// create new elevator
-		_elevator = createVehicle [ELE_PlatformClass, [0,0,0], [], 0, "CAN_COLLIDE"];
+		_elevator = createVehicle [ELE_StartClass /*ELE_PlatformClass*/, [0,0,0], [], 0, "CAN_COLLIDE"];
 		// _elevator = ELE_PlatformClass createVehicleLocal _pos;
 		_elevator setDir _dir;
 		_elevator setPosATL _pos;
@@ -212,7 +212,7 @@ ELE_fnc_activateElevator = {
 			_uid = _elevator getVariable ["ObjectUID", "0"];
 			deleteVehicle _elevator; // delete original
 			// create new elevator
-			_elevator = createVehicle [ELE_PlatformClass, [0,0,0], [], 0, "CAN_COLLIDE"];
+			_elevator = createVehicle [ELE_StartClass /*ELE_PlatformClass*/, [0,0,0], [], 0, "CAN_COLLIDE"];
 			_elevator setDir _dir;
 			_elevator setPosATL _pos;
 			_elevator setVariable ["ElevatorID", _id, true];
@@ -269,14 +269,14 @@ ELE_fnc_callElevator = {
 	_stopId = _id select 1;
 	// find elevator
 	_elevator = nil;
-	{player reveal _x} count (player nearEntities [[ELE_PlatformClass],ELE_MaxRange]);
+	{player reveal _x} count (player nearEntities [[ELE_StartClass /*ELE_PlatformClass*/],ELE_MaxRange]);
 	{
 		_xid = [_x] call ELE_fnc_getElevatorId;
 		if ((_xid select 0) == _elevatorId) exitWith {
 			// elevator found
 			_elevator = _x;
 		};
-	} forEach (nearestObjects [_elevatorStop, [ELE_PlatformClass], ELE_MaxRange * 10]); // max 10 times the range because 10 possible stops
+	} forEach (nearestObjects [_elevatorStop, [ELE_StartClass /*ELE_PlatformClass*/], ELE_MaxRange * 10]); // max 10 times the range because 10 possible stops
 	if (isNil "_elevator") exitWith {
 		format ["Elevator not found"] call dayz_rollingMessages;
 	};
