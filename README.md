@@ -132,7 +132,6 @@ ELE_StopClass = "MetalFloor_Preview_DZ"; // elevator stop classname
 ELE_PlatformClass = "MetalFloor_DZ";
 ELE_Classes = [ELE_StopClass] + [ELE_PlatformClass];
 ```
-before lines you added in 3.
 
 7. In `dayz_server\compile\server_SwapObject.sqf` on line `70` replace:
    ```sqf
@@ -143,7 +142,7 @@ before lines you added in 3.
    _setGlobal = [false,true] select ((_class in DZE_isLockedStorageUpgrade) || (_class in DZE_DoorsLocked) || (_class in ELE_Classes));
    ```
 	This is for the server to set the new, elevator generated CharacterID globally, so the players actually see it as an elevator.
-8. In `dayz_server\system\server_monitor.sqf` on line `271` replace:
+8. In `dayz_server\system\server_monitor.sqf` on line `301` replace:
    ```sqf
    _setGlobal = [false,true] select ((_type in DZE_LockedStorage) || (_type in DZE_DoorsLocked));
    ```
@@ -151,7 +150,7 @@ before lines you added in 3.
    ```sqf
    _setGlobal = [false,true] select ((_type in DZE_LockedStorage) || (_type in DZE_DoorsLocked) || (_type in ELE_Classes));
    ```
-9. In `dayz_server\system\server_monitor.sqf` on line `204` replace:
+9. In `dayz_server\system\server_monitor.sqf` on line `202` replace:
    ```sqf
 	_object setVariable ["ObjectID", _idKey];
    ```
@@ -159,7 +158,7 @@ before lines you added in 3.
    ```sqf
 	_object setVariable ["ObjectID", _idKey, true];
    ```
-10. In `dayz_server\init\server_functions.sqf` on line `89` paste the following:
+10. In `dayz_server\init\server_functions.sqf` on line `90` paste the following:
    ```sqf
 	if ((typeOf _object) in ELE_Classes) then {		
 		_allowed = true;
